@@ -1,0 +1,73 @@
+
+A fortran90 program of a MCMC simulation with a replica exchange algorithm
+which calculates <E(T)>, <C(T)>, <|M|(T)> etc of a 2d Ising model.
+
+MCMC =     Markov chain Monte Carlo method
+Algorithm: Metropolis
+           single spin flip
+           exchange MC
+Model:     Ising model on d=2 LxL square lattice (L=10)
+Energy:    E = - Jnn * sum_{x = 1,L; y = 1,L} [ spin(x,y)*spin(x+1,y) + spin(x,y)*spin(x,y+1) ]
+               spin(x,y) = 1 or -1
+               spin(x, L+1) = spin(x, 1)  ;  spin(L+1, y) = spin(1, y)
+
+#####
+source code:
+    D2Ising_MCMC_exchange_L10.f90 : MCMC source code
+    mt19937_64_OMP.f90            : Mersenne Twister pseudorandom number generator
+
+
+#####
+HOW TO USE
+ see comments in D2Ising_MCMC_exchange_L10.f90
+
+#####
+test calculation
+
+compile and link:
+    ifort -qopenmp -O -o D2Ising_MCMC_exchange_L10.ex mt19937_64_OMP.f90 D2Ising_MCMC_exchange_L10.f90
+        (ifort (IFORT) 2021.9.0 20230302)
+
+run:
+    export OMP_NUM_THREADS=16
+    ./D2Ising_MCMC_exchange_L10.ex
+        42.7 sec
+        (Ubuntu 22.04.2 LTS,    AMD Ryzen9 7950X3D )
+
+output:
+    D2Ising_MCMC_exchange_L10.tab
+
+
+
+
+
+#####
+examples and applications
+#####
+./example_D2Ising_Lxx/
+
+a modified MCMC source code for a 2d Ising model
+d=2 LxL square lattice (L = 32)
+    D2Ising_MCMC_exchange_L32.f90
+
+a plot of <C(T)> for L = 10, 16, 32, 64
+    C_D2Ising_MCMC_exchange_Lxx.pdf
+
+#####
+./example_D1Ising/
+
+modified MCMC source codes for a 1d Ising model
+d=1 size=L chain lattice (L = 100, 800)
+    D1Ising_MCMC_exchange_L100.f90
+    D1Ising_MCMC_exchange_L800.f90
+
+#####
+./example_D3Ising/
+
+a modified MCMC source code for a 3d Ising model
+d=3 LxLxL simple cubic lattice (L = 10)
+    D3Ising_MCMC_exchange_L10.f90
+
+a plot of <C(T)> for L = 10, 16, 32
+    C_D3Ising_MCMC_exchange_Lxx.pdf
+
